@@ -1,0 +1,151 @@
+id,text,intent,resolution,escalate
+1,My card was charged twice for one purchase,refund_or_charge,Please DM the order number so Support can review and correct duplicate billing.,false
+2,I need a refund for an app I bought,refund_or_charge,Please request a refund through reportaproblem.apple.com and DM if you need help.,false
+3,Why is there an unknown charge on my statement,refund_or_charge,Please DM the transaction details so Support can investigate the charge securely.,true
+4,My payment failed but the money disappeared,refund_or_charge,Please DM the order details so Support can check the authorization and settlement.,false
+5,I was billed after cancelling,refund_or_charge,Please DM the subscription receipt so Support can review the billing history.,false
+6,Can you explain this invoice,refund_or_charge,Please DM the invoice or order number so Support can review the charge.,false
+7,Apple took my money and I got nothing,refund_or_charge,Please DM the order number so Support can investigate the purchase.,false
+8,How do I get money back for a mistaken purchase,refund_or_charge,Please request a refund through reportaproblem.apple.com and DM if needed.,false
+9,There is a charge I do not recognize,refund_or_charge,Please DM the transaction details so Support can investigate securely.,true
+10,My credit card payment is not going through,refund_or_charge,Please check your payment method and DM the order details if the issue continues.,false
+11,Please refund my recent purchase,refund_or_charge,Please request a refund through reportaproblem.apple.com and DM if needed.,false
+12,I see two invoices for one order,refund_or_charge,Please DM the order number so Support can review duplicate billing.,false
+13,The renewal charged the wrong amount,refund_or_charge,Please DM the receipt so Support can review the subscription billing.,false
+14,Can Apple reverse this payment,refund_or_charge,Please request a refund through reportaproblem.apple.com and DM if needed.,false
+15,My account has an unexpected payment,refund_or_charge,Please DM the transaction details so Support can investigate securely.,true
+16,The store charged me but the order failed,refund_or_charge,Please DM the order details so Support can check the authorization.,false
+17,Where can I find my receipt,refund_or_charge,Please DM the order number if you need Support to locate the receipt.,false
+18,I want to dispute a charge,refund_or_charge,Please DM the transaction details so Support can investigate securely.,true
+19,The payment is pending for days,refund_or_charge,Please DM the order details so Support can check the payment status.,false
+20,Why did my purchase cost more,refund_or_charge,Please DM the receipt so Support can review the charge.,false
+21,My order has not arrived yet,delivery_or_order,Please send us your order number by DM so Support can check the delivery status.,false
+22,Where is my package,delivery_or_order,Please send us your order number by DM so Support can check the delivery status.,false
+23,Can I get tracking for my shipment,delivery_or_order,Please send us your order number by DM so Support can check the delivery status.,false
+24,The delivery is late,delivery_or_order,Please send us your order number by DM so Support can check the delivery status.,false
+25,My order says delivered but I do not have it,delivery_or_order,Please send us your order number by DM so Support can investigate the delivery.,false
+26,I need to change the shipping address,delivery_or_order,Please DM the order number quickly so Support can check whether the address can be changed.,false
+27,When will my new iPhone arrive,delivery_or_order,Please send us your order number by DM so Support can check the delivery status.,false
+28,My package tracking has stopped updating,delivery_or_order,Please send us your order number by DM so Support can check the shipment.,false
+29,The wrong item was delivered,delivery_or_order,Please DM the order number and a description so Support can investigate.,false
+30,Can I cancel an order before it ships,delivery_or_order,Please DM the order number so Support can check the cancellation status.,false
+31,My delivery is missing,delivery_or_order,Please send us your order number by DM so Support can investigate the delivery.,false
+32,The courier left my order somewhere else,delivery_or_order,Please DM the order number so Support can investigate the delivery.,false
+33,I ordered last week and have no update,delivery_or_order,Please send us your order number by DM so Support can check the shipment.,false
+34,How do I track my Apple order,delivery_or_order,Please send us your order number by DM so Support can provide the status.,false
+35,My shipment was returned,delivery_or_order,Please DM the order number so Support can investigate and advise next steps.,false
+36,The delivery address is wrong,delivery_or_order,Please DM the order number so Support can check available options.,false
+37,My replacement has not arrived,delivery_or_order,Please send us your order number by DM so Support can check the replacement shipment.,false
+38,Why has my package not shipped,delivery_or_order,Please send us your order number by DM so Support can check the order status.,false
+39,My order is stuck in processing,delivery_or_order,Please DM the order number so Support can check the order status.,false
+40,Can you tell me the estimated arrival,delivery_or_order,Please send us your order number by DM so Support can check the estimated delivery.,false
+41,I cannot log into my Apple ID,account_access,Please use Apple's account recovery flow and DM if you remain locked out.,false
+42,I forgot my password,account_access,Please use Apple's account recovery flow and DM if you remain locked out.,false
+43,My account is locked,account_access,Please use Apple's account recovery flow and DM if you remain locked out.,false
+44,The verification code never arrives,account_access,Please use Apple's account recovery flow and DM if you remain locked out.,false
+45,How do I reset my Apple ID password,account_access,Please use Apple's account recovery flow and DM if you remain locked out.,false
+46,I cannot sign in on my iPad,account_access,Please use Apple's account recovery flow and DM if you remain locked out.,false
+47,Apple ID verification keeps failing,account_access,Please use Apple's account recovery flow and DM if you remain locked out.,false
+48,My login stopped working after an update,account_access,Please use Apple's account recovery flow and DM if you remain locked out.,false
+49,I need to recover my account,account_access,Please use Apple's account recovery flow and DM if you remain locked out.,false
+50,Why was my account disabled,account_access,Please use Apple's account recovery flow and DM if you remain locked out.,false
+51,I cannot access my Apple ID email,account_access,Please use Apple's account recovery flow and DM if you remain locked out.,false
+52,The sign in page rejects my password,account_access,Please use Apple's account recovery flow and DM if you remain locked out.,false
+53,How can I verify my identity,account_access,Please use Apple's account recovery flow and DM if you remain locked out.,false
+54,I am locked out of iCloud,account_access,Please use Apple's account recovery flow and DM if you remain locked out.,false
+55,My security code is not working,account_access,Please use Apple's account recovery flow and DM if you remain locked out.,false
+56,Can you help me log in,account_access,Please use Apple's account recovery flow and DM if you remain locked out.,false
+57,My Apple ID will not verify,account_access,Please use Apple's account recovery flow and DM if you remain locked out.,false
+58,I changed my phone and cannot access my account,account_access,Please use Apple's account recovery flow and DM if you remain locked out.,false
+59,I lost access to my trusted number,account_access,Please use Apple's account recovery flow and DM if you remain locked out.,false
+60,Someone changed my account password,account_access,Please contact Apple Support immediately through the official channel.,true
+61,My iPhone keeps crashing,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+62,The latest iOS update broke my phone,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+63,My iPad screen is frozen,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+64,My battery is draining quickly,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+65,The App Store app will not open,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+66,My Mac is running very slowly,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+67,My iPhone will not turn on,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+68,The update is stuck,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+69,My screen is broken,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+70,WiFi stopped working after the update,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+71,My iOS app keeps crashing,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+72,The device is overheating,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+73,My iPhone camera stopped working,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+74,The Mac update failed,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+75,My iPad will not connect,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+76,How do I update iOS,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+77,My phone is stuck on the Apple logo,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+78,The keyboard is not working on my Mac,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+79,My AirPods will not connect to my iPhone,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+80,My device is completely broken,device_or_software,Please share your device model and software version by DM so Support can troubleshoot.,false
+81,I want to cancel my subscription,subscription,Please check your subscriptions in Settings and DM if you need help cancelling.,false
+82,Why did my subscription renew,subscription,Please check your subscriptions in Settings and DM if you need help reviewing a renewal.,false
+83,How do I cancel Apple Music,subscription,Please check your subscriptions in Settings and DM if you need help cancelling.,false
+84,My free trial became a paid plan,subscription,Please DM the subscription receipt so Support can review the renewal.,false
+85,Can I stop my iCloud subscription,subscription,Please check your subscriptions in Settings and DM if you need help cancelling.,false
+86,I was charged for a subscription I cancelled,subscription,Please DM the subscription receipt so Support can review the billing history.,false
+87,Where do I manage subscriptions,subscription,Please check your subscriptions in Settings and DM if you need help managing them.,false
+88,My monthly plan is too expensive,subscription,Please check your subscriptions in Settings and DM if you need help reviewing the plan.,false
+89,How do I turn off auto renewal,subscription,Please check your subscriptions in Settings and DM if you need help cancelling renewal.,false
+90,The subscription button is missing,subscription,Please check your subscriptions in Settings and DM if you need help managing them.,false
+91,Please end my Apple TV subscription,subscription,Please check your subscriptions in Settings and DM if you need help cancelling.,false
+92,Why was I billed for Apple Music,subscription,Please DM the subscription receipt so Support can review the billing history.,false
+93,I need a refund for a trial renewal,subscription,Please DM the subscription receipt so Support can review the renewal.,false
+94,Can I pause my subscription,subscription,Please check your subscriptions in Settings and DM if you need help managing the plan.,false
+95,My family subscription is not showing,subscription,Please check your subscriptions in Settings and DM if you need help managing them.,false
+96,The app says my subscription expired,subscription,Please check your subscriptions in Settings and DM if you need help reviewing the plan.,false
+97,How do I change my subscription,subscription,Please check your subscriptions in Settings and DM if you need help managing the plan.,false
+98,My subscription renewed unexpectedly,subscription,Please DM the subscription receipt so Support can review the renewal.,false
+99,Can I cancel during the trial,subscription,Please check your subscriptions in Settings and DM if you need help cancelling.,false
+100,My iCloud storage plan is wrong,subscription,Please DM the subscription receipt so Support can review the plan.,false
+101,I think my Apple account was hacked,privacy_or_security,For your security, do not share codes publicly. Please contact official Apple Support immediately.,true
+102,There is a scammer pretending to be Apple,privacy_or_security,For your security, do not share codes publicly. Please contact official Apple Support immediately.,true
+103,Someone stole my iPhone,privacy_or_security,For your security, do not share codes publicly. Please contact official Apple Support immediately.,true
+104,I see an unknown device on my account,privacy_or_security,For your security, do not share codes publicly. Please contact official Apple Support immediately.,true
+105,My account has suspicious activity,privacy_or_security,For your security, do not share codes publicly. Please contact official Apple Support immediately.,true
+106,How do I protect my privacy,privacy_or_security,Please review Apple's privacy settings and contact Support for account-specific help.,true
+107,I clicked a phishing link,privacy_or_security,For your security, do not share codes publicly. Please contact official Apple Support immediately.,true
+108,Someone is using my Apple ID,privacy_or_security,For your security, do not share codes publicly. Please contact official Apple Support immediately.,true
+109,My phone was stolen,privacy_or_security,For your security, do not share codes publicly. Please contact official Apple Support immediately.,true
+110,I received a fake Apple email,privacy_or_security,For your security, do not share codes publicly. Please contact official Apple Support immediately.,true
+111,There is fraud on my account,privacy_or_security,For your security, do not share codes publicly. Please contact official Apple Support immediately.,true
+112,My personal data may be exposed,privacy_or_security,Please contact official Apple Support immediately so the account can be reviewed.,true
+113,I lost my device and fear account access,privacy_or_security,For your security, do not share codes publicly. Please contact official Apple Support immediately.,true
+114,Someone knows my verification code,privacy_or_security,For your security, do not share codes publicly. Please contact official Apple Support immediately.,true
+115,My iCloud was hacked,privacy_or_security,For your security, do not share codes publicly. Please contact official Apple Support immediately.,true
+116,An unknown login appeared,privacy_or_security,For your security, do not share codes publicly. Please contact official Apple Support immediately.,true
+117,I need to report a security issue,privacy_or_security,Please contact official Apple Support immediately so the account can be reviewed.,true
+118,Is this Apple support message real,privacy_or_security,For your security, do not share codes publicly. Please contact official Apple Support immediately.,true
+119,My account is being attacked,privacy_or_security,For your security, do not share codes publicly. Please contact official Apple Support immediately.,true
+120,My card was used by a scammer,privacy_or_security,For your security, do not share codes publicly. Please contact official Apple Support immediately.,true
+121,Thanks for fixing my issue,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+122,Apple support is amazing,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+123,Can someone help,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+124,I have a question,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+125,Hello Apple,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+126,Thank you for the quick reply,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+127,Where can I find support,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+128,My issue is complicated,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+129,I need help with something,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+130,Please contact me,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+131,Your team was helpful,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+132,This is not working,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+133,I need a human,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+134,Can you call me,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+135,Please help with my problem,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+136,Good morning Support,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+137,I appreciate the assistance,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+138,Can you look into this,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+139,I have an issue to report,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+140,What should I do,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+141,Please answer my question,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+142,My problem needs attention,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+143,Can I speak to support,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+144,Thank you Apple,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+145,This service is great,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+146,I need more information,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+147,Can you explain this,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+148,Please respond,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+149,I am still waiting for help,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
+150,Need assistance please,praise_or_other,Thanks for reaching out. Please send us a DM with a few more details so Support can help.,true
