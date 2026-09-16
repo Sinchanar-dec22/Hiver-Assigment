@@ -1,4 +1,4 @@
-"""Compute Cohen's kappa for a two-column binary human/judge annotation CSV."""
+"""Compute raw agreement and Cohen's kappa for a binary rubric dimension."""
 from __future__ import annotations
 
 import argparse
@@ -7,6 +7,8 @@ import csv
 
 def kappa(left: list[int], right: list[int]) -> float:
     n = len(left)
+    if n == 0:
+        raise ValueError("No scored rows were found")
     observed = sum(a == b for a, b in zip(left, right)) / n
     p_left = sum(left) / n
     p_right = sum(right) / n
@@ -22,9 +24,10 @@ def main() -> None:
     args = parser.parse_args()
     with open(args.csv_path, encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
-    left = [int(row[args.human]) for row in rows]
-    right = [int(row[args.judge]) for row in rows]
-    print(f"n={len(rows)} raw_agreement={sum(a == b for a, b in zip(left, right)) / len(rows):.3f} kappa={kappa(left, right):.3f}")
+    scored = [row for row in rows if row.get(args.human, "") in {"0", "1"} and row.get(args.judge, "") in {"0", "1"}]
+    left = [int(row[args.human]) for row in scored]
+    right = [int(row[args.judge]) for row in scored]
+    print(f"n={len(scored)} raw_agreement={sum(a == b for a, b in zip(left, right)) / len(scored):.3f} kappa={kappa(left, right):.3f}")
 
 
 if __name__ == "__main__":

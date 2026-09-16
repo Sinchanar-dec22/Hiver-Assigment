@@ -74,7 +74,11 @@ def retrieve_similar(text: str, cases: Iterable[Case], intent: str, limit: int =
     candidates = [case for case in cases if case.intent == intent]
     ranked = sorted(
         candidates,
-        key=lambda case: len(query_terms.intersection(normalize(case.text).split())),
+        key=lambda case: (
+            len(query_terms.intersection(normalize(case.text).split())),
+            # Stable tie-breaker keeps every benchmark run reproducible.
+            case.text,
+        ),
         reverse=True,
     )
     return ranked[:limit]

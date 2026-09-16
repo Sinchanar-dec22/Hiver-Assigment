@@ -20,17 +20,21 @@ def evaluate(cases: list[Case]) -> dict[str, float | int]:
     intent_correct = 0
     escalation_correct = 0
     reply_grounded = 0
-    for case in cases:
-        result = run_agent(case.text, cases)
+    for index, case in enumerate(cases):
+        # The item being evaluated must never be available for retrieval.  Otherwise
+        # its hand-written resolution can be copied into its own prediction.
+        retrieval_pool = cases[:index] + cases[index + 1 :]
+        result = run_agent(case.text, retrieval_pool)
         intent_correct += result.intent == case.intent
         escalation_correct += result.escalate == case.escalation
-        reply_grounded += any(token in result.reply.lower() for token in ("dm", "support", "refund", "subscription", "security"))
+        evidence = [candidate.resolution.lower() for candidate in retrieval_pool if candidate.intent == result.intent]
+        reply_grounded += int(any(result.reply.lower() == resolution for resolution in evidence))
     total = len(cases)
     return {
         "examples": total,
         "intent_accuracy": round(intent_correct / total, 4),
         "escalation_accuracy": round(escalation_correct / total, 4),
-        "reply_grounding_proxy": round(reply_grounded / total, 4),
+        "retrieval_grounding_rate": round(reply_grounded / total, 4),
     }
 
 

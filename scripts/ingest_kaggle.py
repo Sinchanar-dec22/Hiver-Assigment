@@ -1,4 +1,4 @@
-"""Create an Apple Support sample from a Kaggle Customer Support on Twitter CSV.
+"""Create an AppleSupport customer-message sample from Kaggle's twcs.csv.
 
 Usage: python scripts/ingest_kaggle.py path/to/twcs.csv --limit 5000
 The source CSV is intentionally not committed because it is large and licensed by Kaggle.
@@ -22,15 +22,34 @@ def main() -> None:
     written = 0
     with args.csv_path.open(encoding="utf-8", newline="", errors="replace") as source, args.output.open("w", encoding="utf-8", newline="") as target:
         reader = csv.DictReader(source)
+        rows = list(reader)
         fields = reader.fieldnames or []
         text_field = "text" if "text" in fields else "Tweet content"
-        writer = csv.DictWriter(target, fieldnames=["text", "author_id", "created_at"])
+        required = {"tweet_id", "author_id", "inbound", "in_response_to_tweet_id"}
+        missing = required - set(fields)
+        if missing:
+            raise ValueError(f"Expected twcs.csv columns are missing: {sorted(missing)}")
+
+        # An inbound tweet's author is a customer, so filtering inbound rows by
+        # author_id=AppleSupport is incorrect.  Instead, find AppleSupport's
+        # replies and retain the inbound tweets they reply to.
+        apple_replies: dict[str, str] = {}
+        for row in rows:
+            if row.get("author_id", "").casefold() != BRAND.casefold():
+                continue
+            for item in row.get("in_response_to_tweet_id", "").split(","):
+                parent_id = item.strip()
+                if parent_id:
+                    apple_replies.setdefault(parent_id, row.get(text_field, ""))
+
+        writer = csv.DictWriter(target, fieldnames=["tweet_id", "text", "historical_reply", "author_id", "created_at"])
         writer.writeheader()
-        for row in reader:
+        for row in rows:
             text = row.get(text_field, "")
-            handle = row.get("inbound", "")
-            if text and (handle.lower() in {"true", "1"} or not handle):
-                writer.writerow({"text": text, "author_id": row.get("author_id", ""), "created_at": row.get("created_at", "")})
+            inbound = row.get("inbound", "").casefold() in {"true", "1"}
+            tweet_id = row.get("tweet_id", "")
+            if text and inbound and tweet_id in apple_replies:
+                writer.writerow({"tweet_id": tweet_id, "text": text, "historical_reply": apple_replies[tweet_id], "author_id": row.get("author_id", ""), "created_at": row.get("created_at", "")})
                 written += 1
                 if written >= args.limit:
                     break

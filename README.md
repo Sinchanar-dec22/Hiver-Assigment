@@ -1,10 +1,10 @@
 # Apple Support AI Agent
 
-A reproducible take-home implementation for the Hiver SDE Intern assignment. The system classifies an inbound Apple Support message, drafts a historically grounded response, and decides whether to auto-handle or escalate.
+A reproducible Hiver SDE Intern assignment implementation. It classifies an inbound Apple Support message, retrieves a historically observed resolution pattern, drafts a public-safe reply, and states whether the case must be escalated.
 
-## Reproduce the headline results
+## Run the offline smoke benchmark
 
-Requirements: Python 3.10+ and no third-party packages.
+Python 3.10+ is the only requirement.
 
 ```powershell
 python scripts/run_pipeline.py
@@ -12,78 +12,89 @@ python scripts/evaluate.py
 python -m unittest discover -s tests -v
 ```
 
-On the checked-in 150-case golden set, the current run reports:
-
-| Metric | Agent |
-|---|---:|
-| Intent accuracy | 0.827 |
-| Escalation accuracy | 0.740 |
-| Reply grounding proxy | 1.000 |
-
-The results are written to `results.json`. The run takes substantially less than 15 minutes.
+The checked-in fixture has 150 cases and runs in seconds. `results.json` records intent accuracy, escalation accuracy, and a leave-one-out retrieval-grounding rate. These figures are smoke-test results only, not an assignment headline result.
 
 ## What is implemented
 
-- Seven intents discovered from Apple Support-style conversations: refund or charge, delivery or order, account access, device or software, subscription, privacy or security, and praise or other.
-- Transparent keyword classifier with confidence and evidence terms.
-- Resolution retrieval from the labeled case set, followed by a conservative response template.
-- Escalation for security, safety, legal, low-confidence, and unsupported requests.
-- Trivial majority-intent baseline and simple keyword baseline.
-- A deterministic reply judge for grounding, relevance, and secret safety.
-- Optional Kaggle ingestion for the Customer Support on Twitter CSV.
+- Seven data-oriented intents: refund or charge, delivery or order, account access, device or software, subscription, privacy or security, and praise or other.
+- A transparent weighted keyword classifier with evidence terms and security precedence.
+- Leave-one-out resolution retrieval, conservative reply drafting, and an explicit escalation reason.
+- Majority and deliberately simpler first-keyword baselines.
+- An offline judge smoke test, an LLM-judge rubric and runner, and a Cohen's-kappa utility.
+- Reproducible extraction of actual inbound tweets that received an `AppleSupport` reply.
 
-## Data
+## Required source-derived golden set
 
-`data/golden_set.csv` contains 150 curated, manually reviewed examples balanced across the seven intents. It is intentionally checked in so evaluation is deterministic. The examples are seed cases for the pipeline, not a claim that they replace the full Kaggle corpus.
+`data/golden_set.csv` is a deterministic demo fixture for tests. It is not evidence of a source-derived hand-labelled set, and it must not be presented as the submission benchmark. Claiming otherwise would be misleading.
 
-To use the real source data, download the Customer Support on Twitter dataset from Kaggle and run:
+Download Kaggle's Customer Support on Twitter `twcs.csv`, then create the real 150-250 case set:
 
 ```powershell
 python scripts/ingest_kaggle.py path\to\twcs.csv --limit 5000
+python scripts/build_golden_template.py data\apple_support_sample.csv --size 180
 ```
 
-The source dataset is not committed because it is large and distributed by Kaggle. The ingestion script keeps inbound AppleSupport messages only when the source schema exposes an inbound flag; schema variants are handled for the tweet text field.
+Label the output using [the annotation guide](data/ANNOTATION_GUIDE.md), rename it to `data/golden_set.csv`, then rerun the offline commands. The ingestion command finds outbound `AppleSupport` replies and retains their inbound parent tweets; it does not incorrectly assume inbound customers have the AppleSupport author ID. The Kaggle source is excluded from git because it is large and externally distributed.
+
+Do not submit the checked-in demo fixture as the golden set. The final CSV must retain the template's `tweet_id`, `historical_reply`, and `label_notes` columns as evidence of source sampling and manual labelling. Once the real set is ready, create a blinded review sheet, collect labels from an independent reviewer, generate LLM scores, and validate the submission evidence:
+
+```powershell
+python scripts/create_agreement_template.py --input data\golden_set.csv
+# Give data\agreement_human_template.csv to an independent reviewer. They fill only human_* columns.
+python scripts/judge_replies.py --input data\golden_set.csv
+python scripts/merge_agreement_scores.py
+python scripts/kappa.py data\agreement_scores.csv --human human_grounded --judge judge_grounded
+python scripts/kappa.py data\agreement_scores.csv --human human_relevant --judge judge_relevant
+python scripts/kappa.py data\agreement_scores.csv --human human_safe --judge judge_safe
+python scripts/kappa.py data\agreement_scores.csv --human human_escalation_appropriate --judge judge_escalation_appropriate
+python scripts/validate_submission.py
+```
 
 ## Evaluation design
 
-The majority baseline predicts the most frequent intent. The keyword baseline uses the same lexical scorer without retrieval, drafting, or escalation policy. The agent is evaluated on exact intent match, exact escalation decision, and a reply judge.
+The majority baseline always predicts the largest intent class. The simple baseline stops on the first matching keyword. The agent uses weighted lexical scoring, security precedence, retrieval, drafting, and escalation. All agent evaluation uses leave-one-out retrieval, so a case's own human-written resolution cannot be returned while scoring it.
 
-The judge rubric gives one point each:
+`LLM_JUDGE_RUBRIC.md` defines binary scores for grounded, relevant, safe, and escalation-appropriate. To run it with an API key:
 
-1. Grounded: mentions an action or official support path supported by the resolution examples.
-2. Relevant: gives a response long enough to address the selected intent without unrelated advice.
-3. Safe: does not request passwords, verification codes, or card numbers.
+```powershell
+$env:OPENAI_API_KEY = "..."
+python scripts/judge_replies.py --input data\golden_set.csv
+```
 
-`evaluate.py` emits the judge scores. For the required human agreement study, sample 30 cases stratified by intent, have an independent reviewer score the three rubric dimensions, and add their labels beside the judge output. Cohen's kappa should then be reported per dimension. The repository includes the protocol, but does not pretend an independent reviewer was available in this workspace; that is a remaining submission step rather than fabricated evidence.
+It writes `data/llm_judge_scores.csv`. The runner uses the OpenAI Responses API's JSON-object output mode; see the [official API quickstart](https://platform.openai.com/docs/quickstart) for API setup. An independent reviewer must blind-score a stratified sample of 30 cases before seeing the judge scores. Merge their 0/1 labels with the judge score for each dimension and run, for example:
+
+```powershell
+python scripts/kappa.py data\agreement_grounded.csv --human human --judge judge
+```
+
+Report both raw agreement and Cohen's kappa for every rubric dimension. The repository contains the workflow but cannot honestly manufacture independent human-agreement evidence; collect it before submitting.
 
 ## Report
 
 ### Problem framing
 
-For Apple Support, good means routing a customer to the right resolution family, producing a short response that reflects known support behavior, and avoiding unsafe automation. This prototype deliberately does not attempt account identity verification, refunds, payment changes, private-message execution, multilingual support, or full conversation-state tracking.
-
-The auto-handle policy is intentionally narrow. Routine delivery, billing, account-recovery, device, and subscription requests can receive a draft. Security and ambiguous messages escalate because a wrong answer has asymmetric downside.
+For Apple Support, good means routing a customer to the right resolution family, providing a short public-safe draft grounded in prior responses, and avoiding unsafe automation. The prototype deliberately does not perform identity verification, refunds, payment changes, private-message execution, multilingual support, or full conversation-state tracking. Security, safety, legal-risk, and ambiguous cases escalate.
 
 ### Results versus baselines
 
-The keyword baseline reaches the same 0.827 intent accuracy on this curated set because the agent's classifier is intentionally transparent and lexical. The majority baseline reaches 0.200. The agent adds retrieval-grounded drafting and escalation policy, which the baselines do not provide. This is a limitation: the golden set is curated around the vocabulary used by the classifier, so it is not a strong test of robustness.
+After manually labelling the source-derived golden set, report agent, first-keyword baseline, and majority-baseline intent accuracy from `scripts/evaluate.py`, plus escalation accuracy and all four LLM-judge dimensions. Do not tune against the final held-out golden set.
 
 ### Top five failure modes
 
-1. **Overlapping account and security language.** “My Apple ID was hacked” contains account vocabulary; explicit security precedence helps, but mixed cases remain risky.
-2. **Unseen paraphrases and spelling noise.** A lexical model misses slang, typos, and indirect requests.
-3. **Multi-intent tweets.** A single label cannot represent “my order is late and I want a refund.”
-4. **Sparse context.** The draft asks for a DM or order number because a public tweet rarely contains enough information to resolve a case.
-5. **Escalation calibration.** The 0.740 score shows that a useful safety policy still over-escalates vague requests and under-specifies which human queue should receive them.
+1. Overlapping account and security wording can conceal a compromised account.
+2. Unseen paraphrases, typos, and slang defeat lexical matching.
+3. A single-label router cannot fully represent messages with both delivery and refund needs.
+4. Tweets often omit account/order context, so even a correct draft cannot complete resolution publicly.
+5. Escalation thresholds can over-route vague cases or under-specify the right human queue.
 
 ### What is misleading about my headline number?
 
-The 0.827 intent score is not production accuracy. The set is small, curated, English-only, and partly designed around the chosen intent vocabulary. It has no temporal split, no thread-level leakage audit, no adversarial misspellings, and no independent annotator agreement. The 1.000 grounding proxy is especially weak because it checks for support-like words, not factual correctness. The headline should therefore be read as a reproducible smoke benchmark, not proof that the agent can safely handle live customers.
+The bundled fixture result is not production accuracy: it is synthetic, English-only, vocabulary-aligned, and lacks a temporal split, thread-level leakage audit, adversarial noise, and independent annotator agreement. The retrieval-grounding rate only proves a returned draft exists in the leave-one-out evidence pool; it does not prove factual correctness. Use it as a reproducibility smoke test, not evidence the system can safely handle live customers.
 
 ### What I would do with one more week
 
-I would sample complete threads instead of isolated tweets, build an annotation guide with two independent reviewers, measure inter-annotator agreement, replace keyword scoring with a compact embedding or fine-tuned classifier, add retrieval precision checks, and run a temporal holdout. I would also add red-team cases for social engineering and verify every auto-handled path with a human support specialist.
+I would sample complete threads, introduce a two-reviewer annotation guide, measure agreement, use a compact embedding/fine-tuned classifier, audit retrieval precision, add a temporal holdout, and red-team social-engineering cases with a support specialist.
 
 ## Decision log
 
-See `DECISIONS.md` for the 12 non-obvious implementation decisions and their rationale.
+See `DECISIONS.md` for the non-obvious implementation decisions and rationale.

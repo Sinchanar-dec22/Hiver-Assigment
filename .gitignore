@@ -5,3 +5,10 @@ __pycache__/
 *.zip
 *.parquet
 results.json
+data/twcs.csv
+data/twcs/
+data/sample.csv
+data/apple_support_sample.csv
+data/golden_annotation_template.csv
+data/llm_judge_scores.csv
+data/agreement_*.csv
